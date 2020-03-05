@@ -1,5 +1,8 @@
 package com.tens.dw.gmall.realtime.bean
 
+import java.text.SimpleDateFormat
+import java.util.Date
+
 case class EventLog (mid: String,
                      uid: String,
                      appId: String,
@@ -11,5 +14,11 @@ case class EventLog (mid: String,
                      nextPageId: String,
                      itemId: String,
                      ts: Long,
-                     var logDate: String,
-                     var logHour: String)
+                     var logDate: String = null,
+                     var logHour: String = null){
+  private val f1 = new SimpleDateFormat("yyyy-MM-dd")
+  private val f2 = new SimpleDateFormat("HH")
+  private val date = new Date(ts)
+  logDate = f1.format(date)
+  logHour = f2.format(date)
+}

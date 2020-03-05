@@ -1,6 +1,7 @@
 package com.tens.dw.gmallpublisher.service;
 
 import com.tens.dw.gmallpublisher.mapper.DauMapper;
+import com.tens.dw.gmallpublisher.mapper.OrderMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,13 +25,31 @@ public class PublisherServiceImp implements PublisherService {
         List<Map> mapList = dauMapper.getHourDau(date);
         HashMap<String, Long> result = new HashMap<>();
         for (Map map : mapList) {
-
             String key = (String) map.get("LOGHOUER");
             Long value = (Long) map.get("COUNT");
             result.put(key, value);
-
         }
+        return result;
+    }
 
+    @Autowired
+    OrderMapper orderMapper;
+
+    @Override
+    public Double getTotalAmount(String date) {
+        Double total = orderMapper.getTotalAmount(date);
+        return total == null ? 0 : total;
+    }
+
+    @Override
+    public Map<String, Double> getHourAmount(String date) {
+        HashMap<String, Double> result = new HashMap<>();
+        List<Map> mapList = orderMapper.getHourAmount(date);
+        for (Map map : mapList) {
+            String key = (String) map.get("CREATE_HOUR");
+            Double value = (Double) map.get("SUM");
+            result.put(key, value);
+        }
         return result;
     }
 }
